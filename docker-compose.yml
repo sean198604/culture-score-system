@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: culture_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: CultureScore@2026
+      MYSQL_DATABASE: culture_score
+      MYSQL_USER: csuser
+      MYSQL_PASSWORD: CsUser@2026
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pCultureScore@2026"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: culture_backend
+    restart: always
+    environment:
+      DATABASE_URL: mysql+pymysql://csuser:CsUser%402026@mysql:3306/culture_score?charset=utf8mb4
+      SECRET_KEY: "ego-culture-score-secret-key-2026-change-in-prod"
+      ACCESS_TOKEN_EXPIRE_MINUTES: "480"
+      UPLOAD_DIR: /app/uploads
+    ports:
+      - "8001:8000"
+    volumes:
+      - uploads_data:/app/uploads
+      - ./templates:/app/templates
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: culture_frontend
+    restart: always
+    ports:
+      - "7006:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  uploads_data:

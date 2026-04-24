@@ -1,0 +1,205 @@
+/* 全局亮色主题样式 - 对齐8888外贸AI效率平台 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+::root {
+  --bg-primary: #f4f7fb;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --border-color: #e8ecf2;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --accent-blue: #4f6ef7;
+  --accent-blue-hover: #3b5de7;
+  --accent-cyan: #06b6d4;
+  --accent-gold: #f59e0b;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --gradient-accent: linear-gradient(135deg, #4f6ef7, #818cf8);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "方正悠黑简体", "FZYouHei", "PingFang SC", "Microsoft YaHei", sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* AntD 亮色覆盖 */
+.ant-layout { background: transparent !important; }
+.ant-layout-sider { background: var(--bg-secondary) !important; border-right: 1px solid var(--border-color) !important; }
+.ant-menu { background: transparent !important; }
+.ant-menu-item-selected { background: rgba(79,110,247,0.08) !important; color: var(--accent-blue) !important; }
+.ant-menu-item:hover { background: rgba(79,110,247,0.04) !important; }
+.ant-layout-header { background: rgba(255,255,255,0.92) !important; border-bottom: 1px solid var(--border-color) !important; backdrop-filter: blur(12px); }
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gradient-accent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+.stat-card:hover::before { opacity: 1; }
+
+.rank-gold { color: #f59e0b; font-weight: bold; }
+.rank-silver { color: #94a3b8; font-weight: bold; }
+.rank-bronze { color: #d97706; font-weight: bold; }
+
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.score-badge {
+  display: inline-block;
+  background: var(--gradient-accent);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* AntD 表格亮色 */
+.ant-table { background: var(--bg-card) !important; color: var(--text-primary) !important; }
+.ant-table-thead > tr > th { background: #f8fafc !important; color: var(--text-secondary) !important; border-bottom: 1px solid var(--border-color) !important; font-weight: 600 !important; }
+.ant-table-tbody > tr > td { border-bottom: 1px solid var(--border-color) !important; color: var(--text-primary) !important; }
+.ant-table-tbody > tr:hover > td { background: var(--bg-card-hover) !important; }
+.ant-pagination-item { background: var(--bg-card) !important; border-color: var(--border-color) !important; }
+.ant-pagination-item a { color: var(--text-secondary) !important; }
+.ant-pagination-item-active { border-color: var(--accent-blue) !important; }
+.ant-pagination-item-active a { color: var(--accent-blue) !important; }
+
+/* AntD 表单/输入亮色 */
+.ant-input, .ant-select-selector, .ant-picker { background: #f8fafc !important; border-color: var(--border-color) !important; color: var(--text-primary) !important; }
+.ant-input:focus, .ant-input-focused { border-color: var(--accent-blue) !important; box-shadow: 0 0 0 3px rgba(79,110,247,0.12) !important; }
+.ant-form-item-label > label { color: var(--text-secondary) !important; }
+
+/* AntD 弹窗/下拉亮色 */
+.ant-modal-content { background: var(--bg-card) !important; }
+.ant-modal-header { background: var(--bg-card) !important; border-bottom: 1px solid var(--border-color) !important; }
+.ant-modal-title { color: var(--text-primary) !important; }
+
+/* 毛玻璃 Modal 动画 — 白底主体 + 顶端透明 */
+.glass-modal-root .ant-modal-mask {
+  background: rgba(15, 23, 42, 0.35) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+.glass-modal-root .ant-modal {
+  transform-origin: center center !important;
+}
+
+/* 打开动画：从下方滑入 + 放大 */
+.glass-modal-root .ant-modal-content {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* antd5 CSSMotion 类名：ant-motion-enter / ant-motion-leave */
+.glass-modal-root .ant-motion-enter .ant-modal-content {
+  transform: translateY(30px) scale(0.97) !important;
+  opacity: 0 !important;
+}
+.glass-modal-root .ant-motion-enter-active .ant-modal-content {
+  transform: translateY(0) scale(1) !important;
+  opacity: 1 !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 关闭动画：向下滑出 + 缩小（反向） */
+.glass-modal-root .ant-motion-leave .ant-modal-content {
+  transform: translateY(0) scale(1) !important;
+  opacity: 1 !important;
+}
+.glass-modal-root .ant-motion-leave-active .ant-modal-content {
+  transform: translateY(30px) scale(0.97) !important;
+  opacity: 0 !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.25s cubic-bezier(0.4, 0, 1, 1) !important;
+}
+
+/* 遮罩同步动画 */
+.glass-modal-root .ant-motion-enter {
+  opacity: 0 !important;
+}
+.glass-modal-root .ant-motion-enter-active {
+  opacity: 1 !important;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.glass-modal-root .ant-motion-leave {
+  opacity: 1 !important;
+}
+.glass-modal-root .ant-motion-leave-active {
+  opacity: 0 !important;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 1, 1) !important;
+}
+
+/* 兼容旧版 antd 类名 */
+.glass-modal-root .ant-modal-enter .ant-modal-content {
+  transform: translateY(30px) scale(0.97) !important;
+  opacity: 0 !important;
+}
+.glass-modal-root .ant-modal-enter-active .ant-modal-content {
+  transform: translateY(0) scale(1) !important;
+  opacity: 1 !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.glass-modal-root .ant-modal-leave .ant-modal-content {
+  transform: translateY(0) scale(1) !important;
+  opacity: 1 !important;
+}
+.glass-modal-root .ant-modal-leave-active .ant-modal-content {
+  transform: translateY(30px) scale(0.97) !important;
+  opacity: 0 !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.25s cubic-bezier(0.4, 0, 1, 1) !important;
+}
+/* AntD Select 下拉框 — 强制白色底 */
+.ant-select-dropdown { background: #ffffff !important; }
+.ant-select-item { color: var(--text-primary) !important; }
+.ant-select-item-option-selected { background: rgba(79,110,247,0.08) !important; }
+.ant-select-item-option:hover { background: #f8fafc !important; }
+/* 弹窗内的下拉也强制白色 */
+.ant-modal .ant-select-dropdown,
+.glass-modal-root .ant-select-dropdown { background: #ffffff !important; }
+/* Popup容器（antd5下拉弹出在body上） */
+.ant-popup .ant-select-dropdown { background: #ffffff !important; }
+
+/* AntD Tabs 亮色 */
+.ant-tabs-tab { color: var(--text-secondary) !important; }
+.ant-tabs-tab-active .ant-tabs-tab-btn { color: var(--accent-blue) !important; }
+.ant-tabs-ink-bar { background: var(--accent-blue) !important; }
+
+/* AntD Card 亮色 */
+.ant-card { background: var(--bg-card) !important; border: 1px solid var(--border-color) !important; }
+.ant-card-head { background: transparent !important; border-bottom: 1px solid var(--border-color) !important; color: var(--text-primary) !important; }
+.ant-divider { border-color: var(--border-color) !important; }
+.ant-tag { border-color: var(--border-color) !important; }
+.ant-statistic-title { color: var(--text-secondary) !important; font-size: 13px; }
+.ant-statistic-content-value { color: var(--text-primary) !important; }
