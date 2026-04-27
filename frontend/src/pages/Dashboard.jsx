@@ -238,11 +238,11 @@ function CultureCard({ height }) {
   ]
 
   const pageCulture = (
-    <div style={{ height, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height, display: 'flex', flexDirection: 'column', gap: 10 }}>
       {/* 使命 */}
       <div style={{
         background: 'linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%)',
-        borderRadius: 12, padding: '14px 18px', marginBottom: 10, border: '1px solid #c7d2fe',
+        borderRadius: 12, padding: '14px 18px', border: '1px solid #c7d2fe',
       }}>
         <Text style={{ color: '#4f6ef7', fontSize: 12, fontWeight: 600, letterSpacing: 1 }}>🎯 使命</Text>
         <div style={{ marginTop: 4 }}>
@@ -252,7 +252,7 @@ function CultureCard({ height }) {
       {/* 愿景 */}
       <div style={{
         background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-        borderRadius: 12, padding: '14px 18px', marginBottom: 10, border: '1px solid #bbf7d0',
+        borderRadius: 12, padding: '14px 18px', border: '1px solid #bbf7d0',
       }}>
         <Text style={{ color: '#16a34a', fontSize: 12, fontWeight: 600, letterSpacing: 1 }}>🔭 愿景</Text>
         <div style={{ marginTop: 4 }}>
@@ -262,8 +262,7 @@ function CultureCard({ height }) {
       {/* 价值观 */}
       <div style={{
         background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
-        borderRadius: 12, padding: '14px 18px', border: '1px solid #fde68a', flex: 1,
-        overflowY: 'auto',
+        borderRadius: 12, padding: '14px 18px', border: '1px solid #fde68a',
       }}>
         <Text style={{ color: '#d97706', fontSize: 12, fontWeight: 600, letterSpacing: 1 }}>⭐ 价值观</Text>
         <div style={{ marginTop: 8 }}>
@@ -281,8 +280,12 @@ function CultureCard({ height }) {
           ))}
         </div>
       </div>
-      {/* Slogan */}
-      <div style={{ textAlign: 'center', padding: '10px 0 2px' }}>
+      {/* Slogan 独立卡片 */}
+      <div style={{
+        background: 'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
+        borderRadius: 12, padding: '12px 18px', border: '1px solid #c4b5fd',
+        textAlign: 'center',
+      }}>
         <Text style={{ color: '#4f6ef7', fontSize: 15, fontWeight: 800, letterSpacing: 2, fontStyle: 'italic' }}>
           WORK HARD, WORK SMART, HAVE FUN!
         </Text>
@@ -293,26 +296,37 @@ function CultureCard({ height }) {
   // ── 第2页：文化积分介绍 ──
   const pageIntro = (
     <div style={{
-      height, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+      height, display: 'flex', flexDirection: 'column', justifyContent: 'center',
       background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 40%, #e0e7ff 100%)',
       borderRadius: 16, padding: '28px 24px', border: '1px solid #bfdbfe',
     }}>
-      <div style={{ fontSize: 48, marginBottom: 16 }}>🏆</div>
-      <Text style={{ color: '#1e40af', fontSize: 20, fontWeight: 800, marginBottom: 20, textAlign: 'center' }}>
-        文化积分介绍
-      </Text>
-      <div style={{ maxWidth: 320 }}>
-        <Text style={{ color: '#1e293b', fontSize: 14, lineHeight: '28px', textAlign: 'center', display: 'block' }}>
-          为倡导正向积极的工作氛围，加深对公司文化价值观的理解，公司为每位员工设立积分账户，在达成特定事项（跟公司文化相关）后给予积分奖励，保障企业文化的落地。
-        </Text>
-      </div>
-      <div style={{ marginTop: 24, background: 'rgba(79,110,247,0.08)', borderRadius: 12, padding: '14px 20px', width: '100%', maxWidth: 320 }}>
-        <Text style={{ color: '#4f6ef7', fontSize: 13, fontWeight: 600, textAlign: 'center', display: 'block' }}>
-          🎉 众瀚国贸文化市集
-        </Text>
-        <Text style={{ color: '#475569', fontSize: 12, lineHeight: '22px', textAlign: 'center', display: 'block', marginTop: 6 }}>
-          每年年底举办，届时员工们可根据自己手中所持的文化积分进行相应礼品的兑换。
-        </Text>
+      <div style={{ width: '100%', maxWidth: 360, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {/* 标题1：文化积分介绍 */}
+        <div style={{ textAlign: 'center' }}>
+          <span style={{ fontSize: 28 }}>🏆</span>
+          <div style={{ marginTop: 6 }}>
+            <Text style={{ color: '#1e40af', fontSize: 18, fontWeight: 700 }}>文化积分介绍</Text>
+          </div>
+        </div>
+        {/* 正文1 */}
+        <div style={{ background: 'rgba(255,255,255,0.6)', borderRadius: 12, padding: '14px 20px' }}>
+          <Text style={{ color: '#1e293b', fontSize: 13, lineHeight: '24px', display: 'block' }}>
+            为倡导正向积极的工作氛围，加深对公司文化价值观的理解，公司为每位员工设立积分账户，在达成特定事项（跟公司文化相关）后给予积分奖励，保障企业文化的落地。
+          </Text>
+        </div>
+        {/* 标题2：众瀚国贸文化市集 */}
+        <div style={{ textAlign: 'center' }}>
+          <span style={{ fontSize: 28 }}>🎉</span>
+          <div style={{ marginTop: 6 }}>
+            <Text style={{ color: '#1e40af', fontSize: 18, fontWeight: 700 }}>众瀚国贸文化市集</Text>
+          </div>
+        </div>
+        {/* 正文2 */}
+        <div style={{ background: 'rgba(255,255,255,0.6)', borderRadius: 12, padding: '14px 20px' }}>
+          <Text style={{ color: '#1e293b', fontSize: 13, lineHeight: '24px', display: 'block' }}>
+            每年年底举办，届时员工们可根据自己手中所持的文化积分进行相应礼品的兑换。
+          </Text>
+        </div>
       </div>
     </div>
   )
@@ -320,8 +334,8 @@ function CultureCard({ height }) {
   // ── 第3页：积分获取渠道 ──
   const channels = [
     { icon: '👤', name: '选才内推', color: '#4f6ef7' },
-    { icon: '🎭', name: '文化活动', color: '#8b5cf6' },
-    { icon: '🌸', name: '众瀚四季', color: '#ec4899' },
+    { icon: '🎪', name: '文化活动', color: '#8b5cf6' },
+    { icon: '🌸', name: '《众瀚四季》', color: '#ec4899' },
     { icon: '🏃', name: '社团组织', color: '#f59e0b' },
     { icon: '📖', name: '知识分享', color: '#10b981' },
     { icon: '🤝', name: '新人帮带', color: '#06b6d4' },
