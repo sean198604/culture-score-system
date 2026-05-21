@@ -286,7 +286,7 @@ function CultureCard({ height }) {
         borderRadius: 12, padding: '12px 18px', border: '1px solid #c4b5fd',
         textAlign: 'center',
       }}>
-        <Text style={{ color: '#4f6ef7', fontSize: 15, fontWeight: 800, letterSpacing: 2, fontStyle: 'italic' }}>
+        <Text style={{ color: '#4f6ef7', fontSize: 15, fontWeight: 800, letterSpacing: 2, fontStyle: 'italic', whiteSpace: 'nowrap' }}>
           WORK HARD, WORK SMART, HAVE FUN!
         </Text>
       </div>
@@ -300,7 +300,7 @@ function CultureCard({ height }) {
       background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 40%, #e0e7ff 100%)',
       borderRadius: 16, padding: '28px 24px', border: '1px solid #bfdbfe',
     }}>
-      <div style={{ width: '100%', maxWidth: 360, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ width: '100%', maxWidth: 360, margin: '-150px auto 0', display: 'flex', flexDirection: 'column', gap: 16 }}>
         {/* 标题1：文化积分介绍 */}
         <div style={{ textAlign: 'center' }}>
           <span style={{ fontSize: 28 }}>🏆</span>
@@ -837,7 +837,7 @@ export default function DashboardPage() {
             </Col>
 
             {/* 右列：个人积分柱状图 / 企业文化内容 */}
-            <Col xs={24} md={10} style={{ height: '100%' }}>
+            <Col xs={0} md={10} style={{ height: '100%' }}>
               <div style={{
                 background: '#fff',
                 borderRadius: 14,
@@ -845,6 +845,7 @@ export default function DashboardPage() {
                 border: '1px solid #e8ecf2',
                 height: '100%',
                 overflow: 'hidden',
+                minWidth: 420,
               }}>
                 <Spin spinning={loading}>
                   <CultureCard height={deptChartHeight} />

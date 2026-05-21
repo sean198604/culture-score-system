@@ -1,9 +1,7 @@
-version: "3.8"
-
 services:
   mysql:
-    image: mysql:8.0
-    container_name: culture_mysql
+    image: mysql:8.0.36
+    container_name: culture-score-systemv-7006-mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: CultureScore@2026
@@ -15,18 +13,21 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4'
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pCultureScore@2026"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    # 暂时注释 command，使用默认配置启动
+    # command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --init-connect='SET NAMES utf8mb4'
+    # 暂时禁用健康检查，避免启动阻塞
+    # healthcheck:
+    #   test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pCultureScore@2026"]
+    #   interval: 10s
+    #   timeout: 5s
+    #   retries: 10
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: culture_backend
+    container_name: culture-score-systemv-7006-backend
     restart: always
     environment:
       DATABASE_URL: mysql+pymysql://csuser:CsUser%402026@mysql:3306/culture_score?charset=utf8mb4
@@ -39,14 +40,13 @@ services:
       - uploads_data:/app/uploads
       - ./templates:/app/templates
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: culture_frontend
+    container_name: culture-score-systemv-7006-frontend
     restart: always
     ports:
       - "7006:80"

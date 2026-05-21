@@ -87,6 +87,24 @@ def import_team_scores(
     全覆盖导入(overwrite=True)：先删除全部已有记录再导入
     期望列：部门、积分、积分日期；可选列：积分渠道、事件说明、备注
     """
+    # 部门名称映射：Excel中可能的写法 → 数据库标准名称
+    DEPT_NAME_MAP = {
+        "日用百货一组": "日用百货部（一组）",
+        "日用百货二组": "日用百货部（二组）",
+        "日用百货三组": "日用百货部（三组）",
+        "日用百货部三组": "日用百货部（三组）",
+        "日本事业部": "日本事业部（一部）",  # 默认映射到一部
+        "上海事业部": "上海分公司",
+        "业务管理部": "业务管理部",
+        "行政管理部": "行政管理部",
+        "人力资源部": "人力资源部",
+        "财务管理部": "财务管理部",
+        "惠州分公司": "惠州分公司",
+        "视觉设计部": "视觉设计部",
+        "单证部": "单证部",
+        "管培生": "管培生",
+    }
+
     contents = file.file.read()
     df = pd.read_excel(io.BytesIO(contents))
     required = ["部门", "积分", "积分日期"]
@@ -102,6 +120,7 @@ def import_team_scores(
     success, fail = 0, []
     for _, row in df.iterrows():
         dept_name = str(row.get("部门", "")).strip()
+        dept_name = DEPT_NAME_MAP.get(dept_name, dept_name)  # 应用名称映射
         dept = db.query(models.Department).filter(models.Department.name == dept_name).first()
         if not dept:
             fail.append(f"找不到部门: {dept_name}")

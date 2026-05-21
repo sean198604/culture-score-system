@@ -156,9 +156,8 @@ INSERT INTO score_rules (name, category, channel, description, min_score, max_sc
 ('三八文化活动', '活动', '三八文化活动', '三八节文化活动参与', 1, 5),
 ('其他活动', '其他', '其他', '其他文化活动', 0.5, 20);
 
--- 管理员账号（密码: Admin@123，实际生产请用bcrypt hash）
--- 这里存储的是 bcrypt hash for 'Admin@123'
+-- 管理员账号（密码: admin123，bcrypt hash）
 INSERT INTO users (username, name, password_hash, role, is_active) VALUES
-('admin', '系统管理员', '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', 'admin', 1),
-('hr_admin', 'HR管理员', '$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW', 'hr', 1)
+('admin', '系统管理员', '$2b$12$mRlEURuQift8OS9qMPZN6OHn17F55xCH25HW2L7hghzIwvzrzLqZu', 'admin', 1),
+('hr_admin', 'HR管理员', '$2b$12$mRlEURuQift8OS9qMPZN6OHn17F55xCH25HW2L7hghzIwvzrzLqZu', 'hr', 1)
 ON DUPLICATE KEY UPDATE name=VALUES(name);
