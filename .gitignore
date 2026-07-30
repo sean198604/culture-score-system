@@ -7,6 +7,9 @@ backend/__pycache__/
 # Build output
 frontend/dist/
 
+# Environment
+.env
+
 # IDE
 .vscode/
 .idea/
@@ -17,3 +20,10 @@ Thumbs.db
 
 # WorkBuddy
 .workbuddy/
+
+# 数据备份与导出（含员工 PII / 数据库转储，严禁入库）
+*.xlsx
+backup_culture_score.sql
+culture_score_backup_20260603.sql
+*_backup_*.sql
+

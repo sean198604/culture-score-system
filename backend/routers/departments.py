@@ -28,7 +28,11 @@ def list_departments(
 def create_department(body: schemas.DepartmentCreate, db: Session = Depends(get_db), _=Depends(require_admin)):
     if db.query(models.Department).filter(models.Department.name == body.name).first():
         raise HTTPException(400, "部门名称已存在")
-    dept = models.Department(**body.model_dump())
+    data = body.model_dump()
+    if not data.get("code"):
+        # 自动生成code：取拼音首字母或英文缩写
+        data["code"] = body.name.upper()[:20].replace("（", "").replace("）", "").replace(" ", "_")
+    dept = models.Department(**data)
     db.add(dept)
     db.commit()
     db.refresh(dept)

@@ -20,7 +20,7 @@ def build_user_out(user: models.User) -> schemas.UserOut:
 @router.get("", response_model=schemas.PageResult)
 def list_users(
     page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
+    page_size: int = Query(20, ge=1, le=200),
     keyword: Optional[str] = None,
     department_id: Optional[int] = None,
     role: Optional[str] = None,

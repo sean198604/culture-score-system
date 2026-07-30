@@ -431,8 +431,6 @@ function DepartmentTab() {
     { title: 'ID', dataIndex: 'id', width: 60, align: 'center',
       render: v => <Text style={{ color: '#94a3b8', fontSize: 12 }}>#{v}</Text> },
     { title: '部门名称', dataIndex: 'name', render: v => <Text strong style={{ fontSize: 13 }}>{v}</Text> },
-    { title: '部门积分', dataIndex: 'total_score', align: 'right',
-      render: v => <Text style={{ color: '#4f6ef7', fontWeight: 700 }}>{v || 0}</Text> },
     { title: '操作', key: 'action', render: (_, r) => (
       <Space>
         <Button size="small" type="link" onClick={() => openEdit(r)}>编辑</Button>
@@ -648,9 +646,8 @@ function ScoreRuleTab() {
   const categoryColors = { '活动': 'blue', '培训': 'cyan', '荣誉': 'gold', '其他': 'default' }
 
   const columns = [
-    { title: '渠道名称', dataIndex: 'name', render: v => <Text strong>{v}</Text> },
     { title: '分类', dataIndex: 'category', render: v => <Tag color={categoryColors[v] || 'default'}>{v}</Tag> },
-    { title: '积分渠道', dataIndex: 'channel', render: v => v || '-' },
+    { title: '渠道名称', dataIndex: 'name', render: v => <Text strong>{v}</Text> },
     { title: '默认积分', key: 'range', render: (_, r) => (
       <Text type="secondary">{r.min_score} ~ {r.max_score}</Text>
     )},
@@ -675,17 +672,11 @@ function ScoreRuleTab() {
 
       <Modal title={editRecord ? '编辑渠道' : '新增渠道'} open={modalOpen} onCancel={() => setModalOpen(false)} footer={null} {...GLASS_MODAL_PROPS}>
         <Form form={form} layout="vertical" onFinish={handleSave} style={{ marginTop: 16 }}>
-          <Form.Item name="name" label="渠道名称" rules={[{ required: true }]}>
-            <Input placeholder="如：月度之星、创新提案" />
-          </Form.Item>
           <Form.Item name="category" label="分类" rules={[{ required: true }]}>
             <Select options={['活动', '培训', '荣誉', '其他'].map(v => ({ value: v, label: v }))} />
           </Form.Item>
-          <Form.Item name="channel" label="积分渠道">
-            <Input placeholder="如：文化活动、技术培训" />
-          </Form.Item>
-          <Form.Item name="description" label="规则说明">
-            <Input.TextArea rows={3} />
+          <Form.Item name="name" label="渠道名称" rules={[{ required: true }]}>
+            <Input placeholder="如：月度之星、创新提案" />
           </Form.Item>
           <Space>
             <Form.Item name="min_score" label="最低分">
@@ -748,11 +739,20 @@ function PersonalScoreTab() {
     form.setFieldsValue({ ...r, score_date: r.score_date ? dayjs(r.score_date) : null })
     setModalOpen(true)
   }
-  const openCreate = () => { setEditRecord(null); setModalDeptFilter(undefined); form.resetFields(); setModalOpen(true) }
+  const openCreate = () => {
+    setEditRecord(null)
+    setModalDeptFilter(undefined)
+    form.resetFields()
+    form.setFieldsValue({ score_date: dayjs() })
+    // 打开弹窗时刷新员工列表
+    usersApi.list({ page_size: 200 }).then(r => setUsers(r.items || []))
+    rulesApi.list({ page_size: 100 }).then(r => setRules(r.items || []))
+    setModalOpen(true)
+  }
 
-  // 按部门筛选后的员工列表
+  // 按部门筛选后的员工列表（修复类型比较）
   const filteredUsers = modalDeptFilter
-    ? users.filter(u => u.department_id === modalDeptFilter)
+    ? users.filter(u => Number(u.department_id) === Number(modalDeptFilter))
     : users
 
   const handleSave = async (values) => {
@@ -827,7 +827,6 @@ function PersonalScoreTab() {
     { title: '日期', dataIndex: 'score_date', width: 110 },
     { title: '姓名', dataIndex: 'user_name', render: v => <Text strong>{v}</Text> },
     { title: '部门', dataIndex: 'department_name', render: v => v ? <Tag color="blue">{v}</Tag> : '-' },
-    { title: '积分渠道', dataIndex: 'channel', render: v => v ? <Tag color="cyan">{v}</Tag> : '-' },
     { title: '事件描述', dataIndex: 'event_desc', ellipsis: true },
     { title: '积分', dataIndex: 'score', align: 'right',
       render: v => <Text style={{ color: v >= 0 ? '#4f6ef7' : '#ff4444', fontWeight: 700 }}>{v >= 0 ? '+' : ''}{v}</Text> },
@@ -886,20 +885,19 @@ function PersonalScoreTab() {
           <Form.Item name="score_date" label="积分日期" rules={[{ required: true }]}>
             <DatePicker style={{ width: '100%' }} />
           </Form.Item>
+          <Form.Item name="rule_id" label="关联渠道名称">
+            <Select allowClear showSearch optionFilterProp="label"
+              onChange={(val) => {
+                const rule = rules.find(r => r.id === val)
+                if (rule && rule.max_score) form.setFieldsValue({ score: Number(rule.max_score) })
+              }}
+              options={rules.map(r => ({ value: r.id, label: r.name }))} />
+          </Form.Item>
           <Form.Item name="score" label="积分值" rules={[{ required: true }]}>
             <InputNumber step={0.5} style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item name="rule_id" label="关联渠道">
-            <Select allowClear options={rules.map(r => ({ value: r.id, label: r.name }))} />
-          </Form.Item>
-          <Form.Item name="channel" label="积分渠道">
-            <Input />
-          </Form.Item>
           <Form.Item name="event_desc" label="事件描述">
             <Input.TextArea rows={3} />
-          </Form.Item>
-          <Form.Item name="remark" label="备注">
-            <Input />
           </Form.Item>
           <Form.Item>
             <Space>

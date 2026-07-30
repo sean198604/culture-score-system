@@ -78,7 +78,7 @@ def list_scores(
 
 @router.post("", response_model=schemas.UserScoreOut)
 def create_score(body: schemas.UserScoreCreate, db: Session = Depends(get_db), admin=Depends(require_admin)):
-    score = models.UserScore(**body.model_dump(), recorder=admin.name)
+    score = models.UserScore(**body.model_dump(exclude={'recorder'}), recorder=admin.name)
     db.add(score)
     db.commit()
     db.refresh(score)

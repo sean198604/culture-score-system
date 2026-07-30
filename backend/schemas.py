@@ -30,7 +30,7 @@ class LoginRequest(BaseModel):
 # ─── Department ───────────────────────────────────────────
 class DepartmentBase(BaseModel):
     name: str
-    code: str
+    code: Optional[str] = None
     description: Optional[str] = None
 
 

@@ -42,7 +42,7 @@ def list_team_scores(
 
 @router.post("", response_model=schemas.TeamScoreOut)
 def create_team_score(body: schemas.TeamScoreCreate, db: Session = Depends(get_db), admin=Depends(require_admin)):
-    ts = models.TeamScore(**body.model_dump(), recorder=admin.name)
+    ts = models.TeamScore(**body.model_dump(exclude={'recorder'}), recorder=admin.name)
     db.add(ts)
     db.commit()
     db.refresh(ts)

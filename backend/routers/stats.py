@@ -87,7 +87,7 @@ def get_stats(
         # selectedId 只影响右侧图表（趋势/渠道/日历/部门积分）
         if category:
             q = q.filter(models.UserScore.channel.ilike(f"%{category}%"))
-        q = q.group_by(models.User.id, models.User.name, models.Department.name).order_by(desc("total")).limit(50)
+        q = q.group_by(models.User.id, models.User.name, models.Department.name).order_by(desc("total")).limit(500)
         for r in q.all():
             ranking.append({"id": r.id, "name": r.name, "department_name": r.dept_name, "score": float(r.total)})
 
@@ -103,7 +103,7 @@ def get_stats(
             q = q.filter(models.TeamScore.score_date < end_date)
         if category:
             q = q.filter(models.TeamScore.channel.ilike(f"%{category}%"))
-        q = q.group_by(models.TeamScore.department_id).having(func.coalesce(func.sum(models.TeamScore.score), 0) > 0).order_by(desc("total")).limit(50)
+        q = q.group_by(models.TeamScore.department_id).having(func.coalesce(func.sum(models.TeamScore.score), 0) > 0).order_by(desc("total")).limit(500)
         # JOIN 部门名称
         for r in q.all():
             dept = db.query(models.Department).filter(models.Department.id == r.department_id).first()

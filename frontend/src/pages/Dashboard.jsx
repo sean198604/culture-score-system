@@ -22,8 +22,8 @@ const LEFT_GUTTER = 16 * 1    // 2个卡片之间1个间距
 const LEFT_CARD_HEIGHT = Math.floor((RIGHT_HEIGHT - LEFT_GUTTER) / 2)  // 每个卡片高度 ≈339
 const LEFT_CHART_HEIGHT = LEFT_CARD_HEIGHT - CARD_PADDING - CARD_BORDER  // 图表高度 ≈305
 
-// ═══════════════════════════════════════
-// 排行榜组件（左侧窄版，大字体）
+// 排行榜表格滚动高度 = 卡片内容高度 - 标题 - 搜索框 - 表格头
+const RANKING_SCROLL_Y = CHART_AREA_BASE - 100  // ≈560
 // ═══════════════════════════════════════
 function Ranking({ data, store, onDetail }) {
   const isUser = store.orgType === 'user'
@@ -38,11 +38,13 @@ function Ranking({ data, store, onDetail }) {
     {
       title: isUser ? '姓名' : '部门',
       dataIndex: 'name',
+      width: 150,
+      ellipsis: true,
       render: (v, r) => (
-        <div>
+        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           <Text strong style={{ color: '#0f172a', fontSize: 14 }}>{v}</Text>
           {isUser && r.department_name && (
-            <div><Text style={{ color: '#94a3b8', fontSize: 11 }}>{r.department_name}</Text></div>
+            <Text style={{ color: '#94a3b8', fontSize: 10, marginLeft: 4 }}>{r.department_name}</Text>
           )}
         </div>
       ),
@@ -72,7 +74,7 @@ function Ranking({ data, store, onDetail }) {
       rowKey="id"
       size="small"
       pagination={false}
-      scroll={{ y: 640 }}
+      scroll={{ y: RANKING_SCROLL_Y }}
       onRow={(record) => ({
         onClick: () => {
           store.setSelectedId(record.id === store.selectedId ? null : record.id)
@@ -530,7 +532,7 @@ function DetailModal({ visible, record, store, onClose }) {
 
   const columns = [
     { title: '日期', dataIndex: 'score_date', width: 100, render: v => <Text style={{ fontSize: 12 }}>{v}</Text> },
-    { title: '来源', dataIndex: 'channel', width: 90, render: v => v ? <Tag color="blue" style={{ fontSize: 11 }}>{v}</Tag> : <Text style={{ color: '#94a3b8' }}>-</Text> },
+    { title: '分类', dataIndex: 'channel', width: 90, render: v => v ? <Tag color="blue" style={{ fontSize: 11 }}>{v}</Tag> : <Text style={{ color: '#94a3b8' }}>-</Text> },
     { title: '事由', dataIndex: 'event_desc', ellipsis: true, render: v => <Text style={{ fontSize: 12 }}>{v || '-'}</Text> },
     { title: '积分', dataIndex: 'score', width: 70, align: 'right', render: v => <Text style={{ color: v >= 0 ? '#4f6ef7' : '#ef4444', fontWeight: 600, fontSize: 13 }}>{v >= 0 ? '+' : ''}{v}</Text> },
   ]
@@ -782,6 +784,7 @@ export default function DashboardPage() {
               <Text strong style={{ color: '#0f172a', fontSize: 15 }}>
                 🏆 {isUser ? '个人积分列表' : '部门积分列表'}
               </Text>
+              <Text style={{ color: '#94a3b8', fontSize: 11 }}>共 {data.ranking.length} {isUser ? '人' : '个部门'}</Text>
             </div>
             <Input
               prefix={<SearchOutlined style={{ color: '#94a3b8' }} />}
