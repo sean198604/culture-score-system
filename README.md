@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/readme-cover.png" alt="Culture Score System project cover" width="100%" /></p>
+
 # EGO 企业文化积分系统
 
 > EGO INTERNATIONAL 企业文化积分管理平台，生产级全栈项目
